@@ -1,13 +1,16 @@
 ---
 - name: install some useful packages 
-  yum: name={{ item }} state=latest
+  apt: name={{ item }} state=latest
   with_items:
+  - libssl-dev
+  - build-essential
   - git
   - supervisor
   - python-pip
   - python-jinja2
-  - python-devel
+  - python-dev
   - unzip
+  - curl
 
 - name: pip ansible install
   action: command pip install ansible
@@ -35,14 +38,14 @@
 - name: populate etc ansible config
   copy: src=ansible.cfg dest=/{{configdir}}
 
-- name: git clone playbook examples to awx projects folder
-  git: repo={{ playbookrepo }} dest={{ playbookdir }} accept_hostkey=yes
+#- name: git clone playbook examples to awx projects folder
+#  git: repo={{ playbookrepo }} dest={{ playbookdir }} accept_hostkey=yes
 
 - name: Vagrant user demo playbook directory
   file: path=/home/vagrant/playbooks owner=vagrant group=vagrant mode=755 state=directory
 
-- name: put lamp_haproxy example in user playbook dir
-  git: repo={{ playbookrepo }} dest={{ userplaybookdir }} accept_hostkey=yes
+#- name: put lamp_haproxy example in user playbook dir
+#  git: repo={{ playbookrepo }} dest={{ userplaybookdir }} accept_hostkey=yes
 
 - name: fix vagrant home permissions
   shell: sudo chown -R vagrant.vagrant /home/vagrant
